@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<stdlib.h>
+long int combination(long int);
+long int sum;
+long int count=0;
+struct node
+{
+    int v;
+    struct node *next;
+};
+
+struct node ** creategraph(int);
+void dsf(struct node **,int ,int *);
+
+struct node ** addedge(int ,int ,struct node **);
+
+
+int main()
+{
+    struct node  **al;
+    int n,p;
+    scanf("%d%d",&n,&p);
+    al=creategraph(n);
+    for(int i=0;i<p;i++)
+    {
+        int a,b;
+        scanf("%d%d",&a,&b);
+        addedge(a,b,al);
+        
+    }
+     int *visited;
+   
+    visited = (int*)malloc(n * sizeof(int));
+    
+    for(int i=0;i<n;i++)
+    {
+        visited[i] = i + 1;
+    }
+    for(int i=0;i<n;i++)
+    {
+        visited[i]=0;
+        
+    }
+   
+}
+    
+    for(int i=0;i<n;i++)
+    {
+        if(visited[i]==0)
+        {
+            sum=0;
+            dsf(al,i,visited);
+            long int a=combination(sum);
+            count=count+a;
+        }
+        
+    }
+    long int m,l;
+    m=combination(n);
+    l=m-count;
+    printf("%ld",l);
+   
+    
+}
+struct node ** creategraph(int n)
+{
+    struct node **al;
+    al=(struct node**)malloc(sizeof(struct node*)*n);
+    for(int i=0;i<n;i++)
+    {
+        al[i]=NULL;
+    }
+    
+    
+    return al;
+    
+}
+
+
+struct node ** addedge(int a,int b,struct node **al)
+{
+ 
+    struct node *nw;
+    nw=(struct node*)malloc(sizeof(struct node));
+    nw->v=b;
+    nw->next=al[a];
+    al[a]=nw;
+    
+    nw=(struct node*)malloc(sizeof(struct node));
+    nw->v=a;
+    nw->next=al[b];
+    al[b]=nw;
+    return al;
+    
+}
+
+void dsf(struct node **al,int v,int *visited)
+{
+    
+    struct node *curr;
+    visited[v]=1;
+    sum=sum+1;
+    
+  
+    for(curr=al[v];curr!=NULL;curr=curr->next)
+    {
+        if(visited[curr->v]==0)
+        {
+            dsf(al,curr->v,visited);
+        }
+    }
+    
+    
+}
+
+
+
+long int combination(long int a)
+{
+
+
+    long int r;
+    r=a*(a-1)/2;
+    return r;
+}
+
